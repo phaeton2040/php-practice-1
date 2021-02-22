@@ -1,0 +1,11 @@
+Комментарий из документации к функции fgets на сайте php.info
+
+- This function takes an array as argument ($arr).
+- The array function argument itself isn't passed by reference, so the function knows it isn't allowed to modify the original at all.
+- Then the foreach loop happens. The array itself wasn't passed by reference to the function, so PHP knows that it isn't allowed to modify the outside array.
+- But it also sees that you want to look at all VALUES by reference (&$val), so PHP says "Uh oh, this is dangerous. If we just give them references to the original array's values, and they assign some new value to their reference, they would destroy the original array which they aren't allowed to touch!".
+- So PHP makes a FULL COPY of the ENTIRE array and ALL VALUES before it starts iterating. YIKES!
+
+Therefore: STOP using the old, mythological "&$val" iteration method! It's almost always BAD! With worse performance, and risks of bugs and quirks as is demonstrated in the manual.
+
+You can always manually write array assignments explicitly, without references, like this:
